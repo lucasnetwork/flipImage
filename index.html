@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>Rote Images</h2>
+    <div class="container">
+      <img
+        class="image"
+        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.y4YjKmc1g-R9VZUvZzM_EQHaEK%26pid%3DApi&f=1"
+      />
+      <img
+        class="image"
+        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.y4YjKmc1g-R9VZUvZzM_EQHaEK%26pid%3DApi&f=1"
+      />
+      <img
+        class="image"
+        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.y4YjKmc1g-R9VZUvZzM_EQHaEK%26pid%3DApi&f=1"
+      />
+      <img
+        class="image"
+        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.y4YjKmc1g-R9VZUvZzM_EQHaEK%26pid%3DApi&f=1"
+      />
+    </div>
+    <button value="90">></button>
+    <button value="270"><</button>
+    <button value="0"><</button>
+    <button value="180">></button>
+    <div class="url">
+      <label>Nova imagem</label>
+      <input id="url" type="url" placeholder="url" />
+    </div>
+  </body>
+  <script>
+    const key = {
+      ["ArrowRight"]: 90,
+      ["ArrowDown"]: 180,
+      ["ArrowLeft"]: 270,
+      ["ArrowUp"]: 0,
+    };
+    const buttons = document.querySelectorAll("button");
+    const input = document.querySelectorAll("#url");
+    const images = document.querySelectorAll(".image");
+    const body = document.querySelector("body");
+
+
+    body.addEventListener("keydown", (e) => {
+      const image = document.querySelector(".selected");
+      const value = key[e.key];
+      if (!value == undefined || !image) {
+        return;
+      }
+      image.style.transform = `rotate(${value}deg)`;
+    });
+
+
+    function resetImages(newImage,image){
+        image.setAttribute("src", newImage);
+        image.style.transform = `rotate(0deg)`;
+        image.classList.remove("selected");
+    }
+
+    url.addEventListener("keydown", (e) => {
+      if (!e.target.value) {
+        return;
+      }
+      if (!(e.key === "Enter")) {
+        console.log(e);
+        return;
+      }
+      var myHeaders = new Headers();
+      const myInit = {
+        method: "GET",
+        headers: myHeaders,
+        mode: "cors",
+        cache: "default",
+      };
+      const myRequest = new Request(e.target.value, myInit);
+
+      fetch(myRequest)
+        .then((response) => {
+          console.log(response);
+          if (response.ok) {
+            images.forEach((image) =>resetImages(e.target.value,image));
+            return;
+          }
+          alert("Imagem não encontrada");
+        })
+        .catch((image) => {
+          images.forEach((image) => resetImages(e.target.value,image));
+        });
+    });
+
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const image = document.querySelector(".selected");
+        const value = e.target.getAttribute("value");
+        image.style.transform = `rotate(${value}deg)`;
+      });
+    });
+
+
+    images.forEach((image) => {
+      image.addEventListener("click", (e) => {
+        const imageSelected = document.querySelector(".selected");
+        if (e.target.classList.contains("selected")) {
+          e.target.classList.remove("selected");
+          return;
+        }
+        if (imageSelected) {
+          imageSelected.classList.remove("selected");
+        }
+        e.target.classList.add("selected");
+      });
+    });
+  </script>
+</html>
